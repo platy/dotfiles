@@ -1,2 +1,3 @@
-atom.symlink/packages
+atom/atom.symlink/packages
+atom/atom.symlink/.apm
 git/gitconfig.symlink
