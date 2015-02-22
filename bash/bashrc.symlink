@@ -8,3 +8,8 @@ export DOTFILES=~/.dotfiles
 for file in $DOTFILES/**/*.bash; do
   source $file
 done
+
+# .bash_local for private stuff
+if [[ -a ~/.bash_local ]]; then
+  source ~/.bash_local
+fi
