@@ -13,7 +13,7 @@ if test ! $(which brew)
 fi
 
 # Install homebrew packages
-brew install grc coreutils spark
+brew install grc coreutils
 
 cd "$(dirname $0)"/..
 

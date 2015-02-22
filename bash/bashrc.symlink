@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+export DOTFILES=~/.dotfiles
+
+for file in $DOTFILES/**/*.bash; do
+  source $file
+done
