@@ -9,6 +9,12 @@ what should be done with the file.
 - Run .dotfiles/script/bootstrap to make symlinks
 - Run .dofiles/script/install to install stuff
 
+## Script naming conventions
+
+- install.sh should be installed by the install script.
+- homebrew.install.sh should be installed once homebrew is installed. etc..
+- scripts with @Darwin in the path should only be run on OSX, likewise for @Linux
+
 ## References
 
 - [Holmans's dotfiles](https://github.com/holman/dotfiles)
