@@ -3,4 +3,3 @@ os:
   - osx
 script:
   - script/install
-  - script/bootstrap
