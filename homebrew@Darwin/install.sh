@@ -17,7 +17,7 @@ fi
 brew update
 
 # Install homebrew packages
-brew install grc coreutils
+brew install coreutils
 
 cd "$(dirname $0)"/..
 
