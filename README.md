@@ -1,5 +1,13 @@
 # These are my dotfiles, this is where I dot my files.
 
+This follows Holman's modular approach and using file extensions to classify
+what should be done with the file.
+
+## Usage
+
+- Clone to ~/.dotfiles or similar.
+- Run .dotfiles/script/bootstrap to make symlinks
+- Run .dofiles/script/install to install stuff
 
 ## References
 
@@ -12,5 +20,8 @@
 
 I would really like to get a system setup scripted in here.
 
-I also don't want to be installing so much stuff into my main OS. So I want to
-set up a small linux VM to run all the non-graphical stuff.
+Modularise bash_profile.
+
+Set up whole osx environment.
+
+Also should be able to use parts for some bash environment I'm ssh'd into.
