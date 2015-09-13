@@ -14,6 +14,8 @@ if test ! $(which brew)
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
+brew update
+
 # Install homebrew packages
 brew install grc coreutils
 
