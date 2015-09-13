@@ -12,3 +12,6 @@
   welcome:
     showOnStartup: false
   linter: {}
+  "atom-beautify":
+    _analyticsUserId: "9e86070e-0a47-4d2b-8a0f-92e12df3b2e4"
+  "merge-conflicts": {}
