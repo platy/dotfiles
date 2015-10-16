@@ -1,1 +1,2 @@
-export EC2_HOME=/usr/local/ec2/ec2-api-tools-1.7.3.0
+#!/usr/bin/env bash
+export AWS_USER=mike
