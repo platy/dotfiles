@@ -22,6 +22,11 @@ brew install coreutils
 cd "$(dirname $0)"/..
 
 # find the homebrew dependent installers and run them iteratively
-find . -name homebrew.install.sh | while read installer ; do sh -c "${installer}" ; done
+find . -name homebrew.install.sh \
+  | while read installer; do
+      echo "installing ${installer}"
+      sh -c "${installer}"
+      echo "installed ${installer}"
+  done
 
 exit 0
