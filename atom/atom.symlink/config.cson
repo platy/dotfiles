@@ -1,17 +1,17 @@
 "*":
-  editor:
-    tabLength: 2
-    invisibles: {}
+  "atom-beautify":
+    _analyticsUserId: "9e86070e-0a47-4d2b-8a0f-92e12df3b2e4"
   core:
     themes: [
       "atom-dark-ui"
       "atom-dark-syntax"
     ]
+  editor:
+    invisibles: {}
+    tabLength: 2
   "exception-reporting":
     userId: "7b1466d4-e4a5-8230-e3f0-123ccc4af31f"
+  linter: {}
+  "merge-conflicts": {}
   welcome:
     showOnStartup: false
-  linter: {}
-  "atom-beautify":
-    _analyticsUserId: "9e86070e-0a47-4d2b-8a0f-92e12df3b2e4"
-  "merge-conflicts": {}
