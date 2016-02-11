@@ -1,4 +1,5 @@
 atom/atom.symlink/packages
 atom/atom.symlink/.apm
 atom/atom.symlink/blob-store
-
+.idea
+vagrant/.vagrant
