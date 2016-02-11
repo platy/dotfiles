@@ -2,6 +2,6 @@
 
 set -e
 
-brew install node npm nvm
+brew install nvm
 
 [ -e ~/.nvm ] || mkdir ~/.nvm
