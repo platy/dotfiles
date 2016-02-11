@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-apt-get install -y git
+sudo apt-get install -y git
