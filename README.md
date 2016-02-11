@@ -24,10 +24,8 @@ what should be done with the file.
 
 ## Plan
 
-I would really like to get a system setup scripted in here.
-
-Modularise bash_profile.
-
-Set up whole osx environment.
-
-Also should be able to use parts for some bash environment I'm ssh'd into.
+- development linux vm
+- Modularise bash_profile.
+- Set up whole osx environment.
+- Also should be able to use parts for some bash environment I'm ssh'd into.
+- Have unit tests.

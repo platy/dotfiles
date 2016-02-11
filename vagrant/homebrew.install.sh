@@ -2,6 +2,8 @@
 
 set -e
 
-brew install Caskroom/cask/vagrant
+brew install Caskroom/cask/vagrant Caskroom/cask/virtualbox
 
-cd vagrant && vagrant provision
+cd vagrant
+vagrant provision
+:
