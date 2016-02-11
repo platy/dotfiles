@@ -6,7 +6,8 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: "192.168.222.11"
 
   # Attempt to share the host home dir
-  config.vm.synced_folder "../..", "/host_home"
+  config.vm.synced_folder "../..", "/home/vagrant/host"
+  config.vm.synced_folder "..", "/home/vagrant/.dotfiles"
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = "Default vagrant"
@@ -14,11 +15,8 @@ Vagrant.configure(2) do |config|
     vb.cpus = 2
   end
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo apt-get update
-  #   sudo apt-get install -y apache2
-  # SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    OVERWRITE_ALL=true .dotfiles/script/bootstrap
+    .dotfiles/script/install
+  SHELL
 end

@@ -4,4 +4,4 @@ set -e
 
 brew install Caskroom/cask/vagrant
 
-cd vagrant && vagrant up
+cd vagrant && vagrant provision
