@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
-ubuntu() {
-  cd $DOTFILES/vagrant && vagrant up && vagrant ssh
+trusty() {
+  cd $DOTFILES/vagrant && vagrant up default && vagrant ssh default
 }
+
+xenial() {
+  cd $DOTFILES/vagrant && vagrant up xenial && vagrant ssh xenial
+}
+

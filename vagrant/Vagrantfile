@@ -2,19 +2,31 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.network "private_network", ip: "192.168.222.11"
+  config.vm.define "default" do |trusty|
+    trusty.vm.box = "ubuntu/trusty64"
+    trusty.vm.network "private_network", ip: "192.168.222.11"
+    trusty.vm.provider "virtualbox" do |vb|
+      vb.name = "Default vagrant"
+    end
+  end
+
+  config.vm.define "xenial" do |xenial|
+    xenial.vm.box = "ubuntu/xenial64"
+    xenial.vm.network "private_network", ip: "192.168.222.12"
+    xenial.vm.provider "virtualbox" do |vb|
+      vb.name = "Xenial Vagrant"
+    end
+  end
 
   # Attempt to share the host home dir
   config.vm.synced_folder "../..", "/home/vagrant/host"
   config.vm.synced_folder "..", "/home/vagrant/.dotfiles"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "Default vagrant"
     vb.memory = 1024
     vb.cpus = 2
   end
-
+  
   config.vm.provision "shell", inline: <<-SHELL
     OVERWRITE_ALL=true .dotfiles/script/bootstrap
     .dotfiles/script/install
