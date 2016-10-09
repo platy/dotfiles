@@ -41,12 +41,14 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-# source the module bash files
-for file in $DOTFILES/**/*.bash; do
-  source $file
+# find the bash scripts and source them
+find $DOTFILES \( -name "*.bash" -or -name *@$(uname -s).bash \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" \) \
+	  | while read installer; do
+    source "${installer}"
 done
 
 # .bash_local for private stuff
 if [[ -a ~/.bash_local ]]; then
   source ~/.bash_local
 fi
+
