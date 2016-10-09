@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
 ubuntu() {
-  cd $DOTFILES/vagrant && vagrant up && vagrant ssh
+  VAGRANT_CWD=$DOTFILES/vagrant vagrant up && \
+	  VAGRANT_CWD=$DOTFILES/vagrant vagrant ssh
 }
+
