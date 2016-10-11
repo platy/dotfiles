@@ -42,8 +42,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 # find the bash scripts and source them
-find $DOTFILES \( -name "*.bash" -or -name *@$(uname -s).bash \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" \) \
-	  | while read installer; do
+profile_scripts=$(find $DOTFILES \( -name "*.bash" -or -name *@$(uname -s).bash \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" \))
+for installer in $profile_scripts; do
     source "${installer}"
 done
 
