@@ -2,7 +2,7 @@
 
 set -e
 
-echo what docker package should i install?
+brew install Caskroom/versions/docker-beta
 
-docker build -f .dotfiles/docker/trusty/Dockerfile -t trusty .dotfiles
+docker build -f $DOTFILES/docker/trusty/Dockerfile -t trusty $DOTFILES
 
