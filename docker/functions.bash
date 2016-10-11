@@ -6,6 +6,6 @@ build_trustyd() {
 
 trustyd() {
   build_trustyd
-  docker run -it --rm trusty
+  docker run -it --rm -v $HOME:/home/host -v $DOTFILES:/root/.dotfiles trusty
 }
 

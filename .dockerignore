@@ -1,0 +1,9 @@
+# ignore changes in bash files - usually we dont need to rebuild as they are mounted inside
+**.bash
+.dockerignore
+**/Dockerfile
+**/.vagrant
+**/Vagrantfile
+**/*.symlink
+**/.git
+

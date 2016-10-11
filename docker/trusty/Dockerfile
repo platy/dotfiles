@@ -1,10 +1,10 @@
 FROM ubuntu:trusty
 
-ENV HOME /home/mike
-WORKDIR $HOME
 RUN apt-get update
 RUN apt-get install -y git openssh-client vim
+WORKDIR /root
 ADD . .dotfiles
-RUN bash .dotfiles/script/bootstrap
 RUN .dotfiles/script/install
+RUN rm .bashrc && .dotfiles/script/bootstrap
+WORKDIR /home/host
 
