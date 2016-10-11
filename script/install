@@ -7,11 +7,12 @@ set -e
 cd "$(dirname $0)"/..
 
 # find the installers and run them iteratively
-find . \( -name install.sh -or -name install@$(uname -s).sh \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" \) \
-  | while read installer; do
-      echo "installing ${installer}"
-      sh -c "${installer}"
-      echo "installed ${installer}"
-  done
+applicable_installers=$(find . \( -name install.sh -or -name install@$(uname -s).sh \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" \))
+echo $applicable_installers
+for installer in $applicable_installers; do
+  echo "installing ${installer}"
+  sh -c "${installer}" || echo "error installing ${installer}"
+  echo "installed ${installer}"
+done
 
 echo "Install completed"

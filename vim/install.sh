@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -i
 
 set -e
 
@@ -11,6 +11,6 @@ else
 fi
 
 # Install plugins
-echo "Installing Vundle plugins silently"
+echo "Installing Vundle plugins silently - log is piped to null - so errors wont be seen"
 vim +PluginInstall +qall &>/dev/null
 
