@@ -18,6 +18,10 @@ brew update
 
 # Install homebrew packages
 brew install coreutils
+brew install Caskroom/cask/1password
+brew install Caskroom/cask/evernote
+brew install Caskroom/cask/google-chrome
+brew install Caskroom/cask/spotify
 
 cd "$(dirname $0)"/..
 
