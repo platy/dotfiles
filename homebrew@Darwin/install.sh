@@ -22,6 +22,11 @@ brew install Caskroom/cask/1password
 brew install Caskroom/cask/evernote
 brew install Caskroom/cask/google-chrome
 brew install Caskroom/cask/spotify
+brew install Caskroom/cask/enpass
+brew install Caskroom/cask/webstorm
+brew install wget
+brew install Caskroom/cask/hipchat
+brew cask install flux
 
 cd "$(dirname $0)"/..
 
