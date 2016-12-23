@@ -18,15 +18,16 @@ brew update
 
 # Install homebrew packages
 brew install coreutils
-brew install Caskroom/cask/1password
-brew install Caskroom/cask/evernote
-brew install Caskroom/cask/google-chrome
-brew install Caskroom/cask/spotify
-brew install Caskroom/cask/enpass
-brew install Caskroom/cask/webstorm
 brew install wget
-brew install Caskroom/cask/hipchat
+brew cask install 1password
+brew cask install evernote
+brew cask install google-chrome
+brew cask install spotify
+brew cask install enpass
+brew cask install webstorm
+brew cask install hipchat
 brew cask install flux
+brew cask install tunnelblick
 
 cd "$(dirname $0)"/..
 
