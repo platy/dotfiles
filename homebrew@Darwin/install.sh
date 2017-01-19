@@ -28,6 +28,7 @@ brew cask install webstorm
 brew cask install hipchat
 brew cask install flux
 brew cask install tunnelblick
+brew install rust
 
 cd "$(dirname $0)"/..
 

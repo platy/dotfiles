@@ -3,7 +3,8 @@ filetype off                  " required
 set hidden
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.config/nvim/bundle/Vundle.vim
+call vundle#rc('~/.config/nvim/bundle')
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
@@ -14,6 +15,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
 Plugin 'scrooloose/syntastic'
+Plugin 'neomake/neomake'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -44,4 +46,7 @@ let g:syntastic_check_on_wq = 0
 let g:racer_cmd = "~/.cargo/bin/racer"
 let $RUST_SRC_PATH="~/src/rustc-1.6.0/src/"
 " let g:rustfmt_autosave = 1
+
+" neomake
+autocmd! BufWritePost *.rs NeomakeProject cargo
 

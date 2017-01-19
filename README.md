@@ -33,6 +33,11 @@ Ubuntu development environment on mac:
 - scripts or modules with `@Darwin` in the path should only be run on OSX, likewise for `@Linux`
 - scripts ending .bash will be sourced in .bashrc
 
+## Config naming conventions
+
+- *.symlink files will be symlinked into home dir
+- *.config files will be symlinked into ~/.config
+
 ## References
 
 - [Holmans's dotfiles](https://github.com/holman/dotfiles)

@@ -2,8 +2,10 @@
 
 set -e
 
+brew install neovim/neovim/neovim
+
 # Install / update vundle
-VUNDLE_DIR=../.vim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
+VUNDLE_DIR=../.config/nvim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
 if [ ! -d $VUNDLE_DIR ]; then # new install
 	git clone https://github.com/VundleVim/Vundle.vim.git $VUNDLE_DIR
 else
@@ -12,5 +14,5 @@ fi
 
 # Install plugins
 echo "Installing Vundle plugins silently - log is piped to null - so errors wont be seen"
-vim +PluginInstall +qall &>/dev/null
+nvim +PluginInstall +qall &>/dev/null
 
