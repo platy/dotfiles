@@ -25,7 +25,6 @@ brew cask install google-chrome
 brew cask install spotify
 brew cask install enpass
 brew cask install webstorm
-brew cask install hipchat
 brew cask install flux
 brew cask install tunnelblick
 
