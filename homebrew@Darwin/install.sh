@@ -14,19 +14,14 @@ if test ! $(which brew)
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-brew update
-
 # Install homebrew packages
-brew install coreutils
-brew install wget
+brew cask install spectacle
 brew cask install 1password
 brew cask install evernote
 brew cask install google-chrome
 brew cask install spotify
 brew cask install enpass
-brew cask install webstorm
 brew cask install flux
-brew cask install tunnelblick
 
 cd "$(dirname $0)"/..
 
