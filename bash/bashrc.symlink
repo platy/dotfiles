@@ -8,6 +8,8 @@ export DOTFILES=~/.dotfiles
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
+HISTSIZE=1000
+HISTFILESIZE=10000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -42,7 +44,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 # find the bash scripts and source them
-profile_scripts=$(find $DOTFILES \( -name "*.bash" -or -name *@$(uname -s).bash \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" \))
+profile_scripts=$(find $DOTFILES \( -name "*.bash" -or -name *@$(uname -s).bash \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" -maxdepth 2 \))
 for installer in $profile_scripts; do
     source "${installer}"
 done

@@ -7,7 +7,7 @@ set -e
 cd "$(dirname $0)"/..
 
 # find the installers and run them iteratively
-applicable_installers=$(find . \( -name install.sh -or -name install@$(uname -s).sh \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" \))
+applicable_installers=$(find . \( -name install.sh -or -name install@$(uname -s).sh \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" -maxdepth 2 \))
 echo $applicable_installers
 for installer in $applicable_installers; do
   echo "installing ${installer}"
