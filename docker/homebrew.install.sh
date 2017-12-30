@@ -2,5 +2,5 @@
 
 set -e
 
-brew install Caskroom/versions/docker-beta
+brew cask install docker
 

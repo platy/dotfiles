@@ -22,6 +22,7 @@ brew cask install google-chrome
 brew cask install spotify
 brew cask install enpass
 brew cask install flux
+brew install httpie
 
 cd "$(dirname $0)"/..
 
