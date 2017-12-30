@@ -1,6 +1,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 set hidden
+set mouse=a
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.config/nvim/bundle/Vundle.vim
@@ -16,7 +17,8 @@ Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
 Plugin 'scrooloose/syntastic'
 Plugin 'neomake/neomake'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'freitass/todo.txt-vim'
+"Plugin 'Valloric/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -51,5 +53,5 @@ let $RUST_SRC_PATH="~/src/rustc-1.6.0/src/"
 " let g:rustfmt_autosave = 1
 
 " neomake
-autocmd! BufWritePost *.rs NeomakeProject cargo
+autocmd! BufWritePost *.rs Neomake cargo
 
