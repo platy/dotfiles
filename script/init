@@ -1,0 +1,9 @@
+#!/bin/bash
+
+xcode-select --install
+
+git clone https://github.com/platy/dotfiles .dotfiles
+.dotfiles/script/install
+.dotfiles/script/bootstrap
+
+echo ssh stuff will need to be set up
