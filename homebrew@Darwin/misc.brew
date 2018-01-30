@@ -3,4 +3,6 @@ cask "google-chrome"
 cask "spotify"
 cask "enpass"
 brew "httpie"
-
+cask "slack"
+cask "pritunl"
+cask "firefox"
