@@ -2,6 +2,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 set hidden
 set mouse=a
+set shiftwidth=2
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.config/nvim/bundle/Vundle.vim
