@@ -1,0 +1,9 @@
+cask "spectacle"
+cask "1password"
+cask "evernote"
+cask "google-chrome"
+cask "spotify"
+cask "enpass"
+cask "flux"
+brew "httpie"
+

@@ -1,0 +1,2 @@
+brew "bash-completion"
+brew "grc"

@@ -14,17 +14,15 @@ if test ! $(which brew)
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# Install homebrew packages
-brew cask install spectacle
-brew cask install 1password
-brew cask install evernote
-brew cask install google-chrome
-brew cask install spotify
-brew cask install enpass
-brew cask install flux
-brew install httpie
-
 cd "$(dirname $0)"/..
+
+# find the homebrew bundles and run them iteratively
+find . -name *.brew \
+  | while read installer; do
+      echo "installing ${installer}"
+      brew bundle --file="${installer}"
+      echo "installed ${installer}"
+  done
 
 # find the homebrew dependent installers and run them iteratively
 find . -name homebrew.install.sh \
@@ -33,5 +31,6 @@ find . -name homebrew.install.sh \
       sh -c "${installer}"
       echo "installed ${installer}"
   done
+
 
 exit 0
