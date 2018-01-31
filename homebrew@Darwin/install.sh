@@ -16,13 +16,10 @@ fi
 
 cd "$(dirname $0)"/..
 
-# find the homebrew bundles and run them iteratively
-find . -name *.brew \
-  | while read installer; do
-      echo "installing ${installer}"
-      brew bundle --file="${installer}"
-      echo "installed ${installer}"
-  done
+# find the homebrew bundles and run them all
+echo "Installing brew bundles"
+cat $(find . -name *.brew) | \
+  brew bundle --file=-
 
 # find the homebrew dependent installers and run them iteratively
 find . -name homebrew.install.sh \

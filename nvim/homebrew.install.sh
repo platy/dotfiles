@@ -2,7 +2,9 @@
 
 set -e
 
-brew install neovim
+brew bundle --file=- <<BUNDLE
+brew "neovim"
+BUNDLE
 
 # Install / update vundle
 VUNDLE_DIR=../.config/nvim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
