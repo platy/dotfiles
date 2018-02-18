@@ -1,6 +1,47 @@
 * TODO Introduction
 * TODO Execution
 * Modules
+** DONE git
+On macos I'm currently installing git from xcode tools using `xcode-select --install` currently, I then use git to fetch this repository, and so it needs to be done as a previous step, a preliminary setup script would be able to do this part to though.
+
+#+BEGIN_SRC shell :tangle git/install@Linux.sh :shebang "#!/bin/bash"
+sudo apt-get install -y git
+#+END_SRC
+
+The git config dotfile.
+
+#+BEGIN_SRC config :tangle git/gitconfig.symlink
+[user]
+	name = Mike Bush
+	email = mpbush@gmail.com
+[core]
+	autocrlf = input
+	excludesfile = ~/.gitignore_global
+[push]
+	default = simple
+[alias]
+	undo-commit = reset --soft HEAD~1
+	redo-commit = commit -c ORIG_HEAD
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[url "git@prod01-gitlab01.geeny.local:"]
+	insteadOf = https://prod01-gitlab01.geeny.local/
+#+END_SRC
+
+Git ignore for system and editor temp files.
+#+BEGIN_SRC config :tangle git/gitignore_global.symlink
+.DS_Store
+*~
+*.swp
+.#*
+#+END_SRC
+
+Small alias for quick status checking.
+
+#+BEGIN_SRC shell :tangle git/alias.bash
+alias gs="git status -s"
+#+END_SRC
+
 ** DONE asdf
 asdf is a version manager for a variety of development tools listed below.
 #+BEGIN_SRC shell
@@ -146,47 +187,6 @@ alias dk=docker
 alias dm=docker-machine
 alias dc=docker-compose
 alias dkpeek="docker run --rm -it"
-#+END_SRC
-
-** DONE git
-On macos I'm currently installing git from xcode tools using `xcode-select --install` currently, I then use git to fetch this repository, and so it needs to be done as a previous step, a preliminary setup script would be able to do this part to though.
-
-#+BEGIN_SRC shell :tangle git/install@Linux.sh :shebang "#!/bin/bash"
-sudo apt-get install -y git
-#+END_SRC
-
-The git config dotfile.
-
-#+BEGIN_SRC config :tangle git/gitconfig.symlink
-[user]
-	name = Mike Bush
-	email = mpbush@gmail.com
-[core]
-	autocrlf = input
-	excludesfile = ~/.gitignore_global
-[push]
-	default = simple
-[alias]
-	undo-commit = reset --soft HEAD~1
-	redo-commit = commit -c ORIG_HEAD
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-[url "git@prod01-gitlab01.geeny.local:"]
-	insteadOf = https://prod01-gitlab01.geeny.local/
-#+END_SRC
-
-Git ignore for system and editor temp files.
-#+BEGIN_SRC config :tangle git/gitignore_global.symlink
-.DS_Store
-*~
-*.swp
-.#*
-#+END_SRC
-
-Small alias for quick status checking.
-
-#+BEGIN_SRC shell :tangle git/alias.bash
-alias gs="git status -s"
 #+END_SRC
 
 ** TODO node
