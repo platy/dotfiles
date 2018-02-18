@@ -1,5 +1,11 @@
 * TODO Introduction
 * TODO Execution
+** TODO Bootstrap shell script before git
+** TODO SSH key generation and management
+** TODO Secret managment
+Maybe have an encrypted vault in here
+** TODO commit hooks to tangle this
+
 * Modules
 ** DONE git
 On macos I'm currently installing git from xcode tools using `xcode-select --install` currently, I then use git to fetch this repository, and so it needs to be done as a previous step, a preliminary setup script would be able to do this part to though.
@@ -191,4 +197,9 @@ alias dkpeek="docker run --rm -it"
 
 ** TODO node
 ** TODO Neovim
+** TODO Spacemacs
 ** TODO Wireshark
+** TODO SSH
+Some of the ssh config I would like to live in here, some of it I would not
+
+SSH remote profiles
