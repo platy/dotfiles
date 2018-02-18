@@ -1,10 +1,4 @@
-#!/bin/sh
-#
-# Homebrew
-#
-# This installs some of the common dependencies needed (or at least desired)
-# using Homebrew.
-
+#! /bin/sh
 set -e
 
 # Check for Homebrew
