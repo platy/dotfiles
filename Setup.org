@@ -1,4 +1,15 @@
 * TODO Introduction
+Installation instructions, config and code for my base working system provided
+in a document which can be tangled into the installation files using emacs' org-mode. Running a tangle
+(eg. C-c C-v t) will tangle all the files frm the document which should then be
+checked into git. The installation process can't depend on emacs as it will need to install it.
+
+Previously the modules had been different directories (git, homebrew, etc), containing the install files and
+configurations for those modules (install.sh, Brewfile, functions.bash). The separations between the files being for
+technical reasons and the separations between the directories for managability. Babel allows all of the code and config
+to be in a single document with the explanation, be managable due to layouts, separate logical modules, and combine
+all the snippets of a particular type into the few files that are needed.
+
 * TODO Execution
 ** TODO Bootstrap shell script before git
 ** TODO SSH key generation and management
@@ -122,6 +133,12 @@ It is then sourced in to the shell in the profile
 . $HOME/.asdf/completions/asdf.bash
 #+END_SRC
 
+** TODO bash
+#+BEGIN_SRC brew :tangle gen/Brewfile
+brew "bash-completion"
+brew "grc"
+#+END_SRC
+
 ** DONE homebrew
 Homebrew is a package manager for macos, it enables the installation of many of the modules below on macos.
 
@@ -141,31 +158,47 @@ fi
 The other modules contain .brew files which can be appended together and passed to homebrew as a bundle to install.
 
 #+BEGIN_SRC shell :tangle homebrew@Darwin/install.sh
-cd "$(dirname $0)"/..
-
 # find the homebrew bundles and run them all
-echo "Installing brew bundles"
-cat $(find . -name *.brew) | \
-  brew bundle --file=-
+echo "Installing brew bundle"
+brew bundle --file=gen/Brewfile
 #+END_SRC
+
+#+RESULTS:
+| Installing | brew                             | bundles   |    |          |              |     |            |
+| Using      | docker                           |           |    |          |              |     |            |
+| Using      | bash-completion                  |           |    |          |              |     |            |
+| Using      | grc                              |           |    |          |              |     |            |
+| Using      | d12frosted/emacs-plus            |           |    |          |              |     |            |
+| Using      | spectacle                        |           |    |          |              |     |            |
+| Using      | google-chrome                    |           |    |          |              |     |            |
+| Using      | spotify                          |           |    |          |              |     |            |
+| Using      | enpass                           |           |    |          |              |     |            |
+| Using      | httpie                           |           |    |          |              |     |            |
+| Using      | jq                               |           |    |          |              |     |            |
+| Using      | tree                             |           |    |          |              |     |            |
+| Using      | d12frosted/emacs-plus/emacs-plus |           |    |          |              |     |            |
+| Using      | slack                            |           |    |          |              |     |            |
+| Using      | pritunl                          |           |    |          |              |     |            |
+| Using      | firefox                          |           |    |          |              |     |            |
+| Using      | wireshark                        |           |    |          |              |     |            |
+| Homebrew   | Bundle                           | complete! | 16 | Brewfile | dependencies | now | installed. |
 
 A couple of the installers require homebrew plus some other stuff, these have shell scripts.
 
 #+BEGIN_SRC shell :tangle homebrew@Darwin/install.sh
 # find the homebrew dependent installers and run them iteratively
-find . -name homebrew.install.sh \
+find $DOTFILES -name homebrew.install.sh \
   | while read installer; do
       echo "installing ${installer}"
       sh -c "${installer}"
       echo "installed ${installer}"
   done
 
-
 exit 0
 #+END_SRC
 
 We have a bunch of homebrew packages which I haven't yet bothered to separate into their own modules.
-#+BEGIN_SRC homebrew :tangle homebrew@Darwin/misc.brew
+#+BEGIN_SRC homebrew :tangle gen/Brewfile
 tap "d12frosted/emacs-plus"
 cask "spectacle"
 cask "google-chrome"
@@ -183,7 +216,7 @@ cask "firefox"
 ** DONE docker
 Docker is installed using homebrew.
 
-#+BEGIN_SRC brewfile :tangle docker/docker.brew
+#+BEGIN_SRC brewfile :tangle gen/Brewfile
 cask "docker"
 #+END_SRC
 
@@ -199,6 +232,10 @@ alias dkpeek="docker run --rm -it"
 ** TODO Neovim
 ** TODO Spacemacs
 ** TODO Wireshark
+#+BEGIN_SRC brew :tangle gen/Brewfile
+cask "wireshark"
+#+END_SRC
+
 ** TODO SSH
 Some of the ssh config I would like to live in here, some of it I would not
 
