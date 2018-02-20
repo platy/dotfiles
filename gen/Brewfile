@@ -16,4 +16,7 @@ cask "firefox"
 brew "bash-completion"
 brew "grc"
 
+tap "d12frosted/emacs-plus"
+brew "emacs-plus", link: true
+
 cask "wireshark"

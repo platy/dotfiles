@@ -231,6 +231,24 @@ alias dkpeek="docker run --rm -it"
 ** TODO node
 ** TODO Neovim
 ** TODO Spacemacs
+There is already an emacs installed with macos, but I'm using emacs-plus from homebrew, as Recommended [[https://github.com/syl20bnr/spacemacs#macos][on the spacemacs install instructions]]
+
+#+BEGIN_SRC brew :tangle gen/Brewfile
+tap "d12frosted/emacs-plus"
+brew "emacs-plus", link: true
+#+END_SRC
+
+Spacemacs is then installed just by checking out it as a base for the emacs config in the home dir.
+#+BEGIN_SRC shell :tangle emacs/install.sh :shebang "#!/bin/bash"
+if [ ! -d ~/.emacs.d ]; then # new install
+  git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+else
+  cd ~/.emacs.d && git pull
+fi
+#+END_SRC
+
+Packages will be installed on first run when it does magic emacs stuff.
+
 ** TODO Wireshark
 #+BEGIN_SRC brew :tangle gen/Brewfile
 cask "wireshark"
