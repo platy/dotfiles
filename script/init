@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/sh
 xcode-select --install
 
 git clone https://github.com/platy/dotfiles .dotfiles

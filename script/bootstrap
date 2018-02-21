@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-#
+#!/bin/sh
 # bootstrap installs things.
 
 cd "$(dirname "$0")/.."
