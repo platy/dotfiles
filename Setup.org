@@ -27,7 +27,8 @@ echo ssh stuff will need to be set up
 #+END_SRC
 
 ** TODO Installation after git
-Once we have git installed we can install most of the other stuff.
+Once we have git installed we can install most of the other stuff. This script used to find and call the others, now we just append them into the same script.
+
 #+BEGIN_SRC shell :tangle script/install :shebang "#!/bin/sh"
 #
 # Run all dotfiles installers.
@@ -36,16 +37,8 @@ set -e
 
 cd "$(dirname $0)"/..
 
-# find the installers and run them iteratively
-applicable_installers=$(find . \( -name install.sh -or -name install@$(uname -s).sh \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" -maxdepth 2 \))
-echo $applicable_installers
-for installer in $applicable_installers; do
-  echo "installing ${installer}"
-  sh -c "${installer}" || echo "error installing ${installer}"
-  echo "installed ${installer}"
-done
-
-echo "Install completed"
+echo Running system specific installer first
+. script/install@Darwin
 #+END_SRC
 
 ** TODO SSH key generation and management
@@ -307,7 +300,8 @@ asdf plugin-list-all
 | vault      |
 
 It is installed as a git repository in `$HOME/.asdf`. Currently the version is specified in here, and so wont update on rerun.
-#+BEGIN_SRC shell :tangle asdf/install.sh :shebang "#! /bin/sh"
+#+BEGIN_SRC shell :tangle script/install
+echo Install ASDF version manager
 ASDF_DIR=$HOME/.asdf
 ASDF_BRANCH=v0.4.1
 if [ ! -d $ASDF_DIR ]; then # new install
@@ -334,23 +328,20 @@ Homebrew is a package manager for macos, it enables the installation of many of 
 
 The installation is a shell script hosted on github, we run it only if homebrew is not found on the path, homebrew updates itself so there is no need to do updates on this run.
 
-#+BEGIN_SRC shell :tangle homebrew@Darwin/install.sh :shebang "#! /bin/sh"
-set -e
-
+#+BEGIN_SRC shell :tangle script/install@Darwin :shebang "#!/bin/sh"
 # Check for Homebrew
 if test ! $(which brew)
   then
-  echo "  Installing Homebrew for you."
+  echo "Installing Homebrew for you."
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 #+END_SRC
 
 The other modules contain .brew files which can be appended together and passed to homebrew as a bundle to install.
 
-#+BEGIN_SRC shell :tangle homebrew@Darwin/install.sh
-# find the homebrew bundles and run them all
-echo "Installing brew bundle"
-brew bundle --file=gen/Brewfile
+#+BEGIN_SRC shell :tangle script/install
+echo "Installing brew bundles"
+brew bundle --file=$DOTFILES/gen/Brewfile
 #+END_SRC
 
 #+RESULTS:
@@ -375,7 +366,7 @@ brew bundle --file=gen/Brewfile
 
 A couple of the installers require homebrew plus some other stuff, these have shell scripts.
 
-#+BEGIN_SRC shell :tangle homebrew@Darwin/install.sh
+#+BEGIN_SRC shell :tangle script/install
 # find the homebrew dependent installers and run them iteratively
 find $DOTFILES -name homebrew.install.sh \
   | while read installer; do
@@ -429,7 +420,8 @@ brew "emacs-plus", link: true
 #+END_SRC
 
 Spacemacs is then installed just by checking out it as a base for the emacs config in the home dir.
-#+BEGIN_SRC shell :tangle emacs/install.sh :shebang "#!/bin/bash"
+#+BEGIN_SRC shell :tangle script/install
+echo Install default Spacemacs configurations
 if [ ! -d ~/.emacs.d ]; then # new install
   git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 else
