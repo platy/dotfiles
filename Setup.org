@@ -208,8 +208,12 @@ On macos I'm currently installing git from xcode tools using `xcode-select --ins
 sudo apt-get install -y git
 #+END_SRC
 
-The git config dotfile.
+Gonna try installing the homebrew git, it comes with bash completion.
+#+BEGIN_SRC brew :tangle gen/Brewfile
+brew "git"
+#+END_SRC
 
+The git config dotfile.
 #+BEGIN_SRC config :tangle git/gitconfig.symlink
 [user]
 	name = Mike Bush

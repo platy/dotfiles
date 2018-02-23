@@ -13,6 +13,8 @@ cask "slack"
 cask "pritunl"
 cask "firefox"
 
+brew "git"
+
 brew "bash-completion"
 brew "grc"
 
