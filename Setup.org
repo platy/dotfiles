@@ -242,6 +242,11 @@ Small alias for quick status checking.
 alias gs="git status -s"
 #+END_SRC
 
+Enable git completion.
+#+BEGIN_SRC shell :tangle git/completion.bash
+source $(brew --prefix git)/etc/bash_completion.d/git-completion.bash
+#+END_SRC
+
 ** DONE asdf
 asdf is a version manager for a variety of development tools listed below.
 #+BEGIN_SRC shell
