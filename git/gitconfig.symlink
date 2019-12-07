@@ -1,6 +1,6 @@
 [user]
 	name = Mike Bush
-	email = mpbush@gmail.com
+	email = platy@njk.onl
 [core]
 	autocrlf = input
 	excludesfile = ~/.gitignore_global
