@@ -1,0 +1,17 @@
+#!/usr/local/bin/zsh
+
+export LANG=en_GB.UTF-8
+export DOTFILES=~/.dotfiles
+export CLICOLOR=
+
+fpath=(/usr/local/share/zsh-completions $fpath)
+
+# find the interactive rc scripts and source them
+for installer in $(find $DOTFILES \( -name "*.rc.zsh" -or -name "*.rc.sh" \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" -maxdepth 2 \)); do
+    source "${installer}"
+done
+
+# .zsh_local for private stuff
+if [[ -a ~/.zsh_local ]]; then
+  source ~/.zsh_local
+fi

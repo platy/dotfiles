@@ -31,7 +31,8 @@ Ubuntu development environment on mac:
 - install.sh should be installed by the install script.
 - homebrew.install.sh should be installed once homebrew is installed. etc..
 - scripts or modules with `@Darwin` in the path should only be run on OSX, likewise for `@Linux`
-- scripts ending .bash will be sourced in .bashrc
+- scripts ending .rc.bash or .rc.sh will be sourced in .bashrc
+- scripts ending .rc.zsh or .rc.sh will be sourced in .zshrc
 
 ## Config naming conventions
 
@@ -47,7 +48,7 @@ Ubuntu development environment on mac:
 
 ## TODO
 
-- Replace Vagrant / VirtualBox linux environment with faster, cleaner docker one
+- zsh
 - Also should be able to use parts for some bash environment I'm ssh'd into.
 - Have unit tests.
 

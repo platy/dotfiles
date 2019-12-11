@@ -18,6 +18,8 @@ brew "git"
 brew "bash-completion"
 brew "grc"
 
+brew "zsh-completions"
+
 tap "d12frosted/emacs-plus"
 brew "emacs-plus", link: true
 
