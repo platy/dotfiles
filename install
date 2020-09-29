@@ -6,9 +6,11 @@ set -e
 
 cd "$(dirname $0)"
 
-echo Running system specific installer first
-if [[ -a $DOTFILES/install@$(uname -s) ]]; then
-  . $DOTFILES/install@$(uname -s)
+if [[ -a install@$(uname -s) ]]; then
+  echo Running system specific installer first
+  . install@$(uname -s)
+else
+  echo "No specific installer for $(uname -s)"
 fi
 
 echo Install default Spacemacs configurations
