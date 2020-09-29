@@ -9,7 +9,3 @@
 [alias]
 	undo-commit = reset --soft HEAD~1
 	redo-commit = commit -c ORIG_HEAD
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-[url "git@prod01-gitlab01.geeny.local:"]
-	insteadOf = https://prod01-gitlab01.geeny.local/

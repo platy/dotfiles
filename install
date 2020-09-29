@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# Run all dotfiles installers.
+
+set -e
+
+cd "$(dirname $0)"
+
+echo Running system specific installer first
+if [[ -a $DOTFILES/install@$(uname -s) ]]; then
+  . $DOTFILES/install@$(uname -s)
+fi
+
+echo Install default Spacemacs configurations
+if [ ! -d ~/.emacs.d ]; then # new install
+  git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+else
+  cd ~/.emacs.d && git pull
+fi
+
+if ! command -v rustup &> /dev/null
+then
+  echo "Installing rust using rustup"
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+else
+  rustup update
+fi
+
+cargo install diesel_cli --no-default-features --features postgres

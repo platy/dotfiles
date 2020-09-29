@@ -152,8 +152,18 @@ prompt_git () {
   fi
 }
 
+prompt_machine () {
+  if [[ -v SSH_CONNECTION ]]
+  then
+    echo "$(tput setaf 4)%n$(tput sgr0)@$(tput setaf 6)%m$(tput sgr0)"
+  fi
+}
+
+prompt_k8_context() {
+  echo $(kubectl config current-context 2> /dev/null)
+}
+
 setopt prompt_subst
 
-prompt='$(tput setaf 4)%n$(tput sgr0)@$(tput setaf 6)%m$(tput sgr0):$(tput setaf 2)%~$(tput sgr0)$(prompt_git)
-$(echo -n $DOCKER_MACHINE_NAME $DOCKER_HOST $(kubectl config current-context) )%(?..$(tput setaf 1)) %% $(tput sgr0)'
-
+prompt='$(prompt_machine):$(tput setaf 2)$(tput bold)%~$(tput sgr0)$(prompt_git)
+$(echo -n $DOCKER_MACHINE_NAME $DOCKER_HOST $(prompt_k8_context) )%{%(?..$(tput setaf 1))%} %% %{$(tput sgr0)%}'

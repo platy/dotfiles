@@ -3,4 +3,5 @@ os:
   - osx
 sudo: required
 script:
-  - script/install
+  - ./install
+  - ./configure

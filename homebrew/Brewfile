@@ -1,0 +1,40 @@
+cask "docker"
+
+brew "syncthing", restart_service: true
+brew "tree"
+cask "firefox"
+cask "flux"
+cask "google-chrome"
+cask "gpg-suite"
+cask "libreoffice"
+cask "slack"
+cask "spectacle"
+cask "spotify"
+
+brew "awscli"
+brew "httpie"
+brew "jq"
+brew "libpq"
+brew "watch"
+brew "watchman"
+brew "wget"
+cask "virtualbox"
+
+brew "kubernetes-cli"
+tap "derailed/k9s"
+brew "derailed/k9s/k9s"
+
+tap "neovim/neovim"
+brew "neovim"
+
+brew "git"
+
+brew "zsh-completions"
+
+tap "d12frosted/emacs-plus"
+brew "emacs-plus", link: true
+
+tap "filosottile/musl-cross"
+brew "filosottile/musl-cross/musl-cross"
+
+cask "wireshark"

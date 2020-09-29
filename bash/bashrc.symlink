@@ -46,16 +46,21 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-# find the rc scripts and source them
-profile_scripts=$(find $DOTFILES \( -name "*.rc.bash" -or -name "*.rc.sh" \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" -maxdepth 2 \))
-for installer in $profile_scripts; do
-    source "${installer}"
-done
+# include aliases
+source $DOTFILES/sh/alias.rc.sh
+
+# include OS-specific rc
+if [[ -a $DOTFILES/sh/$(uname -s).rc.sh ]]; then
+  source $DOTFILES/sh/$(uname -s).rc.sh
+fi
 
 # .bash_local for private stuff
 if [[ -a ~/.bash_local ]]; then
   source ~/.bash_local
 fi
+
+# include prompt
+source $DOTFILES/bash/prompt.rc.bash
 
 
 ###-tns-completion-start-###

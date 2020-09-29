@@ -1,0 +1,27 @@
+#!/bin/bash
+set -e
+
+DOTFILES_DIR=$HOME/.dotfiles
+os_name=$(uname -s)
+
+if [ $os_name == "Darwin" ]
+then
+  echo "Installing Xcode tools"
+  xcode-select --install || echo "Xcode tools already installed at $(xcode-select --print-path)"
+elif [ $os_name == "Linux" ]
+then
+  echo "Installing git"
+  apt-get install -y git
+else
+  echo "Unknown OS : $os_name"
+  exit 1
+fi
+
+echo
+echo "Git installed, cloning dotfiles"
+
+git clone https://github.com/platy/dotfiles $DOTFILES_DIR || git -C $DOTFILES_DIR pull
+.dotfiles/install
+.dotfiles/configure
+
+echo "Set up your SSH keys"

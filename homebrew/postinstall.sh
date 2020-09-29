@@ -1,10 +1,5 @@
 #!/bin/bash -i
-
 set -e
-
-brew bundle --file=- <<BUNDLE
-brew "neovim"
-BUNDLE
 
 # Install / update vundle
 VUNDLE_DIR=../.config/nvim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
@@ -17,4 +12,3 @@ fi
 # Install plugins
 echo "Installing Vundle plugins silently - log is piped to null - so errors wont be seen"
 nvim +PluginInstall +qall &>/dev/null
-

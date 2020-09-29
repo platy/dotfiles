@@ -1,0 +1,13 @@
+#!/bin/bash
+# Check for Homebrew
+if test ! $(which brew)
+  then
+  echo "Installing Homebrew for you."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+fi
+
+echo "Installing brew bundles"
+brew bundle install --file=$DOTFILES/homebrew/Brewfile
+
+echo "Run homebrew post-install"
+homebrew/postinstall.sh

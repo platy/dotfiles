@@ -252,6 +252,10 @@ sexy_bash_prompt_get_docker_machine_info () {
   echo $docker_machine
 }
 
+prompt_k8_context() {
+  echo $(kubectl config current-context 2> /dev/null)
+}
+
 # Define the sexy-bash-prompt
 PS1="\
 \[$sexy_bash_prompt_user_color\]\u\[$sexy_bash_prompt_reset\]\
@@ -264,6 +268,6 @@ PS1="\
   echo -n \"\[$sexy_bash_prompt_git_status_color\]\$(sexy_bash_prompt_get_git_info)\" && \
   echo -n \"\[$sexy_bash_prompt_git_progress_color\]\$(sexy_bash_prompt_get_git_progress)\" && \
   echo -n \"\[$sexy_bash_prompt_preposition_color\]\")\n\[$sexy_bash_prompt_reset\]\
-\$(echo -n \"\$DOCKER_MACHINE_NAME \$DOCKER_HOST \$(kubectl config current-context)\") \
+\$(echo -n \"\$DOCKER_MACHINE_NAME \$DOCKER_HOST \$(prompt_k8_context)\") \
 \[$sexy_bash_prompt_symbol_color\]$sexy_bash_prompt_symbol \[$sexy_bash_prompt_reset\]"
 

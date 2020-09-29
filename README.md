@@ -2,42 +2,12 @@
 
 # These are my dotfiles, this is where I dot my files.
 
-This follows Holman's modular approach and using file extensions to classify
-what should be done with the file.
+See Setup.org for the implementation and explanation.
 
-Installers with:
-
-- basic dependency tree (depended calls installers for dependents)
-- platform specific scripts and modules (`@Linux` / `@Darwin`)
-
-Bash profile scripts with:
-
-- platform specific scripts and modules (`@Linux` / `@Darwin`)
-
-Ubuntu development environment on mac:
-
-- Uses VirtualBox / Vagrant with Linux installers used for provisioning
-- dotfiles linked for a consistent bash environment
-- **In progress: replace with Docker** 
-
-## Usage
-
-- Clone to ~/.dotfiles or similar.
-- Run .dotfiles/script/bootstrap to make symlinks to dotfiles
-- Run .dofiles/script/install to install stuff
-
-## Script naming conventions
-
-- install.sh should be installed by the install script.
-- homebrew.install.sh should be installed once homebrew is installed. etc..
-- scripts or modules with `@Darwin` in the path should only be run on OSX, likewise for `@Linux`
-- scripts ending .rc.bash or .rc.sh will be sourced in .bashrc
-- scripts ending .rc.zsh or .rc.sh will be sourced in .zshrc
-
-## Config naming conventions
-
-- *.symlink files will be symlinked into home dir
-- *.config files will be symlinked into ~/.config
+If you're sure you want it:
+```sh
+/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/platy/dotfiles/master/init)"
+```
 
 ## References
 

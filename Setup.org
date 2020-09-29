@@ -11,46 +11,75 @@ to be in a single document with the explanation, be managable due to layouts, se
 all the snippets of a particular type into the few files that are needed.
 
 * TODO Execution
-** TODO Bootstrap shell script before git
-To get started with the installation, git needs to be installed, this repository needs to be cloned and the installer and dotfile bootstrappers need to be run.
+** Bootstrapping a brand new system
+To get started with the installation, git needs to be installed, this repository needs to be cloned and the installer and dotfile bootstrappers need to be run. This is all handled by calling an init script:
 
-This script is not rereunnable yet.
-
-#+BEGIN_SRC shell :tangle script/init :shebang "#!/bin/sh"
-xcode-select --install
-
-git clone https://github.com/platy/dotfiles .dotfiles
-.dotfiles/script/install
-.dotfiles/script/bootstrap
-
-echo ssh stuff will need to be set up
+#+BEGIN_SRC shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/platy/dotfiles/master/init)"
 #+END_SRC
 
-** TODO Installation after git
-Once we have git installed we can install most of the other stuff. This script used to find and call the others, now we just append them into the same script.
+That will run this script:
+#+BEGIN_SRC shell :tangle init :shebang "#!/bin/bash"
+set -e
 
-#+BEGIN_SRC shell :tangle script/install :shebang "#!/bin/sh"
+DOTFILES_DIR=$HOME/.dotfiles
+os_name=$(uname -s)
+
+if [ $os_name == "Darwin" ]
+then
+  echo "Installing Xcode tools"
+  xcode-select --install || echo "Xcode tools already installed at $(xcode-select --print-path)"
+elif [ $os_name == "Linux" ]
+then
+  echo "Installing git"
+  apt-get install -y git
+else
+  echo "Unknown OS : $os_name"
+  exit 1
+fi
+
+echo
+echo "Git installed, cloning dotfiles"
+
+git clone https://github.com/platy/dotfiles $DOTFILES_DIR || git -C $DOTFILES_DIR pull
+.dotfiles/install
+.dotfiles/configure
+
+echo "Set up your SSH keys"
+#+END_SRC
+
+** Installation after git
+Once we have git installed we can install most of the other stuff. This script used to find and call the others, now we just append them into the same script. Some installers are system dependent and live in `install@Darwin` / `install@Linux`.
+
+#+BEGIN_SRC shell :tangle install :shebang "#!/bin/bash"
 #
 # Run all dotfiles installers.
 
 set -e
 
-cd "$(dirname $0)"/..
+cd "$(dirname $0)"
 
 echo Running system specific installer first
-. script/install@Darwin
+if [[ -a $DOTFILES/install@$(uname -s) ]]; then
+  . $DOTFILES/install@$(uname -s)
+fi
 #+END_SRC
 
 ** TODO SSH key generation and management
 ** TODO Secret managment
 Maybe have an encrypted vault in here
 ** TODO commit hooks to tangle this
-** TODO dotfiles bootstrapping
-The dotfiles in this repository are symlinked into their correct places by this script.
-#+BEGIN_SRC shell :tangle script/bootstrap :shebang "#!/bin/sh"
-# bootstrap installs things.
+** dotfiles linking
 
-cd "$(dirname "$0")/.."
+The dotfiles in this repository are symlinked into their correct places by this script.
+
+- *.symlink files will be symlinked into home dir
+- *.config files will be symlinked into ~/.config
+
+#+BEGIN_SRC shell :tangle configure :shebang "#!/bin/bash"
+# configure installs config files.
+
+cd "$(dirname "$0")"
 DOTFILES_ROOT=$(pwd)
 
 set -e
@@ -201,15 +230,11 @@ echo '  All installed!'
 
 
 * Modules
-** DONE git
-On macos I'm currently installing git from xcode tools using `xcode-select --install` currently, I then use git to fetch this repository, and so it needs to be done as a previous step, a preliminary setup script would be able to do this part to though.
-
-#+BEGIN_SRC shell :tangle git/install@Linux.sh :shebang "#!/bin/bash"
-sudo apt-get install -y git
-#+END_SRC
+** git
+Git is installed first as it is needed in order to fetch this repo, that's in the init script at the top.
 
 Gonna try installing the homebrew git, it comes with bash completion.
-#+BEGIN_SRC brew :tangle gen/Brewfile
+#+BEGIN_SRC brew :tangle homebrew/Brewfile
 brew "git"
 #+END_SRC
 
@@ -226,10 +251,6 @@ The git config dotfile.
 [alias]
 	undo-commit = reset --soft HEAD~1
 	redo-commit = commit -c ORIG_HEAD
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-[url "git@prod01-gitlab01.geeny.local:"]
-	insteadOf = https://prod01-gitlab01.geeny.local/
 #+END_SRC
 
 Git ignore for system and editor temp files.
@@ -242,99 +263,22 @@ Git ignore for system and editor temp files.
 
 Small alias for quick status checking.
 
-#+BEGIN_SRC shell :tangle git/alias.rc.sh
+#+BEGIN_SRC shell :tangle sh/alias.rc.sh
 alias gs="git status -s"
 #+END_SRC
 
-Enable git completion.
-#+BEGIN_SRC shell :tangle git/completion.rc.bash
-source $(brew --prefix git)/etc/bash_completion.d/git-completion.bash
-#+END_SRC
-
-** DONE asdf
-asdf is a version manager for a variety of development tools listed below.
-#+BEGIN_SRC shell
-asdf plugin-list-all
-#+END_SRC
-
-#+RESULTS:
-| R          |
-| adr-tools  |
-| bazel      |
-| clojure    |
-| consul     |
-| crystal    |
-| dmd        |
-| elixir     |
-| elm        |
-| erlang     |
-| golang     |
-| gradle     |
-| haskell    |
-| idris      |
-| java       |
-| julia      |
-| kops       |
-| kubecfg    |
-| kubectl    |
-| lfe        |
-| lua        |
-| luaJIT     |
-| maven      |
-| minikube   |
-| mongodb    |
-| nim        |
-| nodejs     |
-| nomad      |
-| ocaml      |
-| openresty  |
-| packer     |
-| php        |
-| postgres   |
-| python     |
-| racket     |
-| rebar      |
-| redis      |
-| riak       |
-| ruby       |
-| rust       |
-| sbt        |
-| scala      |
-| serf       |
-| solidity   |
-| spark      |
-| swift      |
-| terraform  |
-| terragrunt |
-| vault      |
-
-It is installed as a git repository in `$HOME/.asdf`. Currently the version is specified in here, and so wont update on rerun.
-#+BEGIN_SRC shell :tangle script/install
-echo Install ASDF version manager
-ASDF_DIR=$HOME/.asdf
-ASDF_BRANCH=v0.4.1
-if [ ! -d $ASDF_DIR ]; then # new install
-  git clone https://github.com/asdf-vm/asdf.git --branch $ASDF_BRANCH $ASDF_DIR && cd $ASDF_DIR && git checkout $ASDF_BRANCH
-else
-  cd "$ASDF_DIR" && git pull origin $ASDF_BRANCH
-fi
-#+END_SRC
-
-It is then sourced in to the shell in the profile
-#+BEGIN_SRC shell :tangle asdf/completion.rc.bash
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
-#+END_SRC
-
 ** TODO bash
-#+BEGIN_SRC brew :tangle gen/Brewfile
-brew "bash-completion"
-brew "grc"
-#+END_SRC
-** TODO zsh
 
-#+BEGIN_SRC brew :tangle gen/Brewfile
+Still just in the dirs
+
+** zsh
+
+#+BEGIN_SRC brew :tangle homebrew/Brewfile
 brew "zsh-completions"
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle install@Linux :shebang "#!/bin/bash"
+apt install zsh
 #+END_SRC
 
 From the zsh docs:
@@ -363,117 +307,161 @@ export CLICOLOR=
 
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-# find the interactive rc scripts and source them
-for installer in $(find $DOTFILES \( -name "*.rc.zsh" -or -name "*.rc.sh" \) -and \( -path "*@$(uname -s)*" -or -not -path "*@*" -maxdepth 2 \)); do
-    source "${installer}"
-done
+# include aliases
+source $DOTFILES/sh/alias.rc.sh
+
+# include OS-specific rc
+if [[ -a $DOTFILES/sh/$(uname -s).rc.sh ]]; then
+  source $DOTFILES/sh/$(uname -s).rc.sh
+fi
 
 # .zsh_local for private stuff
 if [[ -a ~/.zsh_local ]]; then
   source ~/.zsh_local
 fi
+
+# include prompt
+source $DOTFILES/zsh/prompt.rc.zsh
 #+END_SRC
 
 `.zlogin' is sourced in login shells. It should contain commands that should be executed only in login shells. `.zlogout' is sourced when login shells exit. `.zprofile' is similar to `.zlogin', except that it is sourced before `.zshrc'. `.zprofile' is meant as an alternative to `.zlogin' for ksh fans; the two are not intended to be used together, although this could certainly be done if desired. `.zlogin' is not the place for alias definitions, options, environment variable settings, etc.; as a general rule, it should not change the shell environment at all. Rather, it should be used to set the terminal type and run a series of external commands (fortune, msgs, etc). 
 
-** DONE homebrew
+** homebrew
 Homebrew is a package manager for macos, it enables the installation of many of the modules below on macos.
 
 The installation is a shell script hosted on github, we run it only if homebrew is not found on the path, homebrew updates itself so there is no need to do updates on this run.
 
-#+BEGIN_SRC shell :tangle script/install@Darwin :shebang "#!/bin/sh"
+#+BEGIN_SRC shell :tangle install@Darwin :shebang "#!/bin/bash"
 # Check for Homebrew
 if test ! $(which brew)
   then
   echo "Installing Homebrew for you."
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 #+END_SRC
 
-The other modules contain .brew files which can be appended together and passed to homebrew as a bundle to install.
+The other modules add to a `Brewfile` which is installed by homebrew.
 
-#+BEGIN_SRC shell :tangle script/install
+#+BEGIN_SRC shell :tangle install@Darwin
 echo "Installing brew bundles"
-brew bundle --file=$DOTFILES/gen/Brewfile
+brew bundle install --file=$DOTFILES/homebrew/Brewfile
 #+END_SRC
 
-#+RESULTS:
-| Installing | brew                             | bundles   |    |          |              |     |            |
-| Using      | docker                           |           |    |          |              |     |            |
-| Using      | bash-completion                  |           |    |          |              |     |            |
-| Using      | grc                              |           |    |          |              |     |            |
-| Using      | d12frosted/emacs-plus            |           |    |          |              |     |            |
-| Using      | spectacle                        |           |    |          |              |     |            |
-| Using      | google-chrome                    |           |    |          |              |     |            |
-| Using      | spotify                          |           |    |          |              |     |            |
-| Using      | enpass                           |           |    |          |              |     |            |
-| Using      | httpie                           |           |    |          |              |     |            |
-| Using      | jq                               |           |    |          |              |     |            |
-| Using      | tree                             |           |    |          |              |     |            |
-| Using      | d12frosted/emacs-plus/emacs-plus |           |    |          |              |     |            |
-| Using      | slack                            |           |    |          |              |     |            |
-| Using      | pritunl                          |           |    |          |              |     |            |
-| Using      | firefox                          |           |    |          |              |     |            |
-| Using      | wireshark                        |           |    |          |              |     |            |
-| Homebrew   | Bundle                           | complete! | 16 | Brewfile | dependencies | now | installed. |
+A couple of the installers require homebrew plus some other stuff, so there is a homebrew post-install script.
 
-A couple of the installers require homebrew plus some other stuff, these have shell scripts.
-
-#+BEGIN_SRC shell :tangle script/install
-# find the homebrew dependent installers and run them iteratively
-find $DOTFILES -name homebrew.install.sh \
-  | while read installer; do
-      echo "installing ${installer}"
-      sh -c "${installer}"
-      echo "installed ${installer}"
-  done
-
-exit 0
+#+BEGIN_SRC shell :tangle install@Darwin
+echo "Run homebrew post-install"
+homebrew/postinstall.sh
 #+END_SRC
 
 We have a bunch of homebrew packages which I haven't yet bothered to separate into their own modules.
-#+BEGIN_SRC homebrew :tangle gen/Brewfile
-tap "d12frosted/emacs-plus"
-cask "spectacle"
+#+BEGIN_SRC homebrew :tangle homebrew/Brewfile
+brew "syncthing", restart_service: true
+brew "tree"
+cask "firefox"
+cask "flux"
 cask "google-chrome"
+cask "gpg-suite"
+cask "libreoffice"
+cask "slack"
+cask "spectacle"
 cask "spotify"
-cask "enpass"
+#+END_SRC
+
+Here's some dev utilities:
+
+#+BEGIN_SRC homebrew :tangle homebrew/Brewfile
+brew "awscli"
 brew "httpie"
 brew "jq"
-brew "tree"
-brew "d12frosted/emacs-plus/emacs-plus"
-cask "slack"
-cask "pritunl"
-cask "firefox"
+brew "libpq"
+brew "watch"
+brew "watchman"
+brew "wget"
+cask "virtualbox"
 #+END_SRC
 
 ** DONE docker
-Docker is installed using homebrew.
+Docker is installed using homebrew on macos.
 
-#+BEGIN_SRC brewfile :tangle gen/Brewfile
+#+BEGIN_SRC brewfile :tangle homebrew/Brewfile
 cask "docker"
 #+END_SRC
 
+And from the docker repo on linux.
+
+#+BEGIN_SRC sh :tangle install@Linux
+apt install     apt-transport-https     ca-certificates     curl     gnupg-agent     software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+apt-key fingerprint 0EBFCD88
+add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+apt-get update
+apt install docker-ce docker-ce-cli containerd.io docker-compose
+#+END_SRC
+
 Aliases for common things that are easy to make typos
-#+BEGIN_SRC shell :tangle docker/alias.rc.sh
+#+BEGIN_SRC shell :tangle sh/alias.rc.sh
 alias dk=docker
 alias dm=docker-machine
 alias dc=docker-compose
 alias dkpeek="docker run --rm -it"
 #+END_SRC
 
+** Kubernetes
+
+#+BEGIN_SRC homebrew :tangle homebrew/Brewfile
+brew "kubernetes-cli"
+tap "derailed/k9s"
+brew "derailed/k9s/k9s"
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle install@Linux :shebang "#!/bin/bash"
+snap install kubectl --classic
+#+END_SRC
+
+#+BEGIN_SRC shell :tangle sh/alias.rc.sh
+alias k8=kubectl
+#+END_SRC
+
+
 ** TODO node
-** TODO Neovim
-** TODO Spacemacs
+** Neovim
+
+#+BEGIN_SRC homebrew :tangle homebrew/Brewfile
+tap "neovim/neovim"
+brew "neovim"
+#+END_SRC
+
+Once neovim is installed, we set up vundle and install plugins.
+
+#+BEGIN_SRC sh :tangle homebrew/postinstall.sh :shebang "#!/bin/bash -i"
+set -e
+
+# Install / update vundle
+VUNDLE_DIR=../.config/nvim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
+if [ ! -d $VUNDLE_DIR ]; then # new install
+	git clone https://github.com/VundleVim/Vundle.vim.git $VUNDLE_DIR
+else
+	cd "$VUNDLE_DIR" && git pull origin master
+fi
+
+# Install plugins
+echo "Installing Vundle plugins silently - log is piped to null - so errors wont be seen"
+nvim +PluginInstall +qall &>/dev/null
+#+END_SRC
+
+** Spacemacs
 There is already an emacs installed with macos, but I'm using emacs-plus from homebrew, as Recommended [[https://github.com/syl20bnr/spacemacs#macos][on the spacemacs install instructions]]
 
-#+BEGIN_SRC brew :tangle gen/Brewfile
+#+BEGIN_SRC brew :tangle homebrew/Brewfile
 tap "d12frosted/emacs-plus"
 brew "emacs-plus", link: true
 #+END_SRC
 
 Spacemacs is then installed just by checking out it as a base for the emacs config in the home dir.
-#+BEGIN_SRC shell :tangle script/install
+#+BEGIN_SRC shell :tangle install
 echo Install default Spacemacs configurations
 if [ ! -d ~/.emacs.d ]; then # new install
   git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
@@ -484,8 +472,38 @@ fi
 
 Packages will be installed on first run when it does magic emacs stuff.
 
-** TODO Wireshark
-#+BEGIN_SRC brew :tangle gen/Brewfile
+** Rust
+
+#+BEGIN_SRC shell :tangle install
+if ! command -v rustup &> /dev/null
+then
+  echo "Installing rust using rustup"
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+else
+  rustup update
+fi
+#+END_SRC
+
+Linux needs build tools, libssl is for the openssl crate, libpq is for the postgres crate.
+
+#+BEGIN_SRC shell :tangle install@Linux
+apt install build-essential libssl-dev pkg-config libpq-dev
+#+END_SRC
+
+For cross-compilation to linux.
+
+#+BEGIN_SRC brew :tangle homebrew/Brewfile
+tap "filosottile/musl-cross"
+brew "filosottile/musl-cross/musl-cross"
+#+END_SRC
+
+I'm using the diesel cli.
+#+BEGIN_SRC shell :tangle install
+cargo install diesel_cli --no-default-features --features postgres
+#+END_SRC
+
+** Wireshark
+#+BEGIN_SRC brew :tangle homebrew/Brewfile
 cask "wireshark"
 #+END_SRC
 
