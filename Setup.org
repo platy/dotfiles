@@ -280,7 +280,7 @@ brew "zsh-completions"
 #+END_SRC
 
 #+BEGIN_SRC sh :tangle install@Linux :shebang "#!/bin/bash"
-apt install zsh
+apt install -y zsh
 #+END_SRC
 
 From the zsh docs:
@@ -391,14 +391,14 @@ cask "docker"
 And from the docker repo on linux.
 
 #+BEGIN_SRC sh :tangle install@Linux
-apt install     apt-transport-https     ca-certificates     curl     gnupg-agent     software-properties-common
+apt install -y   apt-transport-https     ca-certificates     curl     gnupg-agent     software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 apt-key fingerprint 0EBFCD88
 add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
 apt-get update
-apt install docker-ce docker-ce-cli containerd.io docker-compose
+apt install -y docker-ce docker-ce-cli containerd.io docker-compose
 #+END_SRC
 
 Aliases for common things that are easy to make typos
@@ -488,7 +488,7 @@ fi
 Linux needs build tools, libssl is for the openssl crate, libpq is for the postgres crate.
 
 #+BEGIN_SRC shell :tangle install@Linux
-apt install build-essential libssl-dev pkg-config libpq-dev
+apt install -y build-essential libssl-dev pkg-config libpq-dev
 #+END_SRC
 
 For cross-compilation to linux.
