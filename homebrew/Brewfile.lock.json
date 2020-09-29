@@ -342,7 +342,28 @@
           "link": true
         }
       },
-      "filosottile/musl-cross/musl-cross": null
+      "filosottile/musl-cross/musl-cross": null,
+      "scw": {
+        "version": "2.1.0",
+        "bottle": {
+          "cellar": ":any_skip_relocation",
+          "prefix": "/usr/local",
+          "files": {
+            "catalina": {
+              "url": "https://homebrew.bintray.com/bottles/scw-2.1.0.catalina.bottle.tar.gz",
+              "sha256": "208f281b7f07ea134beea711b3b51504bfffbaa2360f71c800613b8401001407"
+            },
+            "mojave": {
+              "url": "https://homebrew.bintray.com/bottles/scw-2.1.0.mojave.bottle.tar.gz",
+              "sha256": "3f1d0aef845c980ea49a2ea57ea6b164ec7528c7bf51904577055471a1f018fc"
+            },
+            "high_sierra": {
+              "url": "https://homebrew.bintray.com/bottles/scw-2.1.0.high_sierra.bottle.tar.gz",
+              "sha256": "819714375ff096fb5b0bbdbf11105c0e3d97a5d027ead59bb1d784673cffa279"
+            }
+          }
+        }
+      }
     },
     "tap": {
       "derailed/k9s": {

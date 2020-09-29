@@ -38,3 +38,5 @@ tap "filosottile/musl-cross"
 brew "filosottile/musl-cross/musl-cross"
 
 cask "wireshark"
+
+brew "scw"

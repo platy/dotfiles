@@ -298,9 +298,7 @@ If ZDOTDIR is not set, then the value of HOME is used; this is the usual case.
 #+END_SRC
 
 `.zshrc' is sourced in interactive shells. It should contain commands to set up aliases, functions, options, key bindings, etc.
-#+BEGIN_SRC zsh :tangle zsh/zshrc.symlink
-#!/usr/local/bin/zsh
-
+#+BEGIN_SRC zsh :tangle zsh/zshrc.symlink :shebang "#!/usr/local/bin/zsh"
 export LANG=en_GB.UTF-8
 export DOTFILES=~/.dotfiles
 export CLICOLOR=
@@ -478,7 +476,8 @@ Packages will be installed on first run when it does magic emacs stuff.
 if ! command -v rustup &> /dev/null
 then
   echo "Installing rust using rustup"
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  source $HOME/.cargo/env
 else
   rustup update
 fi
@@ -511,3 +510,21 @@ cask "wireshark"
 Some of the ssh config I would like to live in here, some of it I would not
 
 SSH remote profiles
+
+** External dev environment
+
+I run a remote dev environment in scaleway sometimes, for that I need the scaleway cli.
+#+BEGIN_SRC brew :tangle homebrew/Brewfile
+brew "scw"
+#+END_SRC
+
+Then I need to run the init interactively.
+#+BEGIN_SRC shell
+scw init
+#+END_SRC
+
+There is autocompletion.
+#+BEGIN_SRC zsh :tangle zsh/zshrc.symlink :shebang "#!/usr/local/bin/zsh"
+# Scaleway CLI autocomplete initialization.
+eval "$(scw autocomplete script shell=zsh)"
+#+END_SRC
