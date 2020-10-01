@@ -13,6 +13,11 @@ if [[ -a $DOTFILES/sh/$(uname -s).rc.sh ]]; then
   source $DOTFILES/sh/$(uname -s).rc.sh
 fi
 
+# Save command history
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+HISTSIZE=2000
+SAVEHIST=1000
+
 # .zsh_local for private stuff
 if [[ -a ~/.zsh_local ]]; then
   source ~/.zsh_local
@@ -23,3 +28,49 @@ source $DOTFILES/zsh/prompt.rc.zsh
 
 # Scaleway CLI autocomplete initialization.
 eval "$(scw autocomplete script shell=zsh)"
+
+#!/usr/local/bin/zsh
+DEV_SERVER_NAME=dev1
+create-dev-server() {
+  scw instance server create image=ubuntu_focal type=DEV1-XL name=$DEV_SERVER_NAME
+  echo "Waiting for server to come up"
+  scw instance server wait $(id-dev-server)
+  sleep 30
+  echo "dev server started"
+  init-dev-server
+}
+
+init-dev-server() {
+  echo "adding ($(ip-dev-server) dev-server) to /etc/hosts"
+  sudo /bin/bash -c "echo $(ip-dev-server) dev-server >> /etc/hosts"
+  echo "installing dev server"
+  ssh root@dev-server '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/platy/dotfiles/master/init)"'
+  ssh root@dev-server <<SCRIPT
+  chsh -s $(which zsh)
+  ssh-keygen -f ~/.ssh/id_rsa -N ""
+  echo "SSH public key:"
+  cat ~/.ssh/id_rsa.pub
+SCRIPT
+}
+
+id-dev-server() {
+  echo $(scw instance server list name=$DEV_SERVER_NAME -o json | jq '.[0].id' -r)
+}
+
+ip-dev-server() {
+  echo $(scw instance server list name=$DEV_SERVER_NAME -o json | jq '.[0].public_ip.address' -r)
+}
+
+start-dev-server() {
+  scw instance server start $(id-dev-server)
+}
+
+destroy-dev-server() {
+  DEV_SERVER_IP=$(scw instance server list name=$DEV_SERVER_NAME -o json | jq '.[0].public_ip.address' -r)
+  scw instance server terminate $(id-dev-server)
+  scw instance ip delete $(ip-dev-server)
+  echo "Stopped server, removing ssh keys and /etc/hosts entry"
+  ssh-keygen -R $(ip-dev-server)
+  ssh-keygen -R dev-server
+  sudo sed -i .backup '/ dev-server/d' /etc/hosts
+}
