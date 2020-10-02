@@ -1,6 +1,6 @@
 os:
   - linux
   - osx
-sudo: required
+dist: focal
 script:
-  - sudo ./install
+  - ./install
