@@ -1,4 +1,4 @@
-* TODO Introduction
+* Introduction
 Installation instructions, config and code for my base working system provided
 in a document which can be tangled into the installation files using emacs' org-mode. Running a tangle
 (eg. C-c C-v t) will tangle all the files from the document which should then be
@@ -10,7 +10,7 @@ technical reasons and the separations between the directories for managability. 
 to be in a single document with the explanation, be managable due to layouts, separate logical modules, and combine
 all the snippets of a particular type into the few files that are needed.
 
-* TODO Execution
+* Execution
 ** Bootstrapping a brand new system
 To get started with the installation, git needs to be installed, this repository needs to be cloned and the installer and dotfile bootstrappers need to be run. This is all handled by calling an init script:
 
@@ -431,7 +431,19 @@ alias k8=kubectl
 #+END_SRC
 
 
-** TODO node
+** node
+
+#+BEGIN_SRC homebrew :tangle homebrew/Brewfile
+brew "nvm"
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle sh/Darwin.rc.sh
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+#+END_SRC
+
 ** Neovim
 
 #+BEGIN_SRC homebrew :tangle homebrew/Brewfile
@@ -566,6 +578,14 @@ ip-dev-server() {
 
 start-dev-server() {
   scw instance server start $(id-dev-server)
+  echo "Waiting for server to come up"
+  scw instance server wait $(id-dev-server)
+}
+
+stop-dev-server() {
+  scw instance server stop $(id-dev-server)
+  echo "Waiting for server to go down"
+  scw instance server wait $(id-dev-server)
 }
 
 destroy-dev-server() {
