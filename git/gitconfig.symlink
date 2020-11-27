@@ -9,3 +9,5 @@
 [alias]
 	undo-commit = reset --soft HEAD~1
 	redo-commit = commit -c ORIG_HEAD
+[pull]
+  ff = only

@@ -19,6 +19,7 @@ brew "watch"
 brew "watchman"
 brew "wget"
 cask "virtualbox"
+cask "visual-studio-code"
 
 brew "kubernetes-cli"
 tap "derailed/k9s"

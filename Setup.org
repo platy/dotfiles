@@ -253,6 +253,8 @@ The git config dotfile.
 [alias]
 	undo-commit = reset --soft HEAD~1
 	redo-commit = commit -c ORIG_HEAD
+[pull]
+  ff = only
 #+END_SRC
 
 Git ignore for system and editor temp files.
@@ -268,10 +270,6 @@ Small alias for quick status checking.
 #+BEGIN_SRC shell :tangle sh/alias.rc.sh
 alias gs="git status -s"
 #+END_SRC
-
-** TODO bash
-
-Still just in the dirs
 
 ** zsh
 
@@ -384,9 +382,16 @@ brew "watch"
 brew "watchman"
 brew "wget"
 cask "virtualbox"
+cask "visual-studio-code"
 #+END_SRC
 
-** DONE docker
+** TODO Podman
+
+Looks interesting, maybe it replaces docker for my uses.
+
+For MacOS: need a VM with podman installed, install the podman client and configure to connect over ssh.
+
+** Docker
 Docker is installed using homebrew on macos.
 
 #+BEGIN_SRC brewfile :tangle homebrew/Brewfile
@@ -457,7 +462,7 @@ Once neovim is installed, we set up vundle and install plugins.
 set -e
 
 # Install / update vundle
-VUNDLE_DIR=../.config/nvim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
+VUNDLE_DIR=$HOME/.config/nvim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
 if [ ! -d $VUNDLE_DIR ]; then # new install
 	git clone https://github.com/VundleVim/Vundle.vim.git $VUNDLE_DIR
 else

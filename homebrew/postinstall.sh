@@ -2,7 +2,7 @@
 set -e
 
 # Install / update vundle
-VUNDLE_DIR=../.config/nvim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
+VUNDLE_DIR=$HOME/.config/nvim/bundle/Vundle.vim # vagrant runs this as root, so the home dir is wrong - using relative at the moment
 if [ ! -d $VUNDLE_DIR ]; then # new install
 	git clone https://github.com/VundleVim/Vundle.vim.git $VUNDLE_DIR
 else
